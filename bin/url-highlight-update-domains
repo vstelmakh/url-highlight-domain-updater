@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\Console\Application;
+use VStelmakh\UrlHighlight\DomainUpdater\Command\UpdateDomainsCommand;
+
+$autoloadPaths = [
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+];
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require $path;
+        break;
+    }
+}
+
+$application = new Application('Url highlight domain updater', '0.1.0');
+
+$command = new UpdateDomainsCommand();
+$application->add($command);
+
+$application->setDefaultCommand($command->getName(), true);
+$application->run();
