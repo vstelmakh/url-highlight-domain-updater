@@ -3,6 +3,8 @@
 namespace VStelmakh\UrlHighlight\DomainUpdater;
 
 use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
+use VStelmakh\UrlHighlight\DomainUpdater\Diff\Diff;
+use VStelmakh\UrlHighlight\DomainUpdater\Diff\DiffFactory;
 use VStelmakh\UrlHighlight\DomainUpdater\Generator\Generator;
 use VStelmakh\UrlHighlight\DomainUpdater\Parser\Parser;
 
@@ -35,10 +37,12 @@ class DomainUpdater
         $this->generator = $generator;
     }
 
-    public function update(): void
+    public function update(): Diff
     {
         $data = $this->crawler->getDataFromIANA();
         $data = $this->parser->parse($data);
+        $diff = DiffFactory::createDiff($data);
         $this->generator->generate($data);
+        return $diff;
     }
 }
