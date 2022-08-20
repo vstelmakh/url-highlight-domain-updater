@@ -5,6 +5,7 @@ namespace VStelmakh\UrlHighlight\DomainUpdater\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
 use VStelmakh\UrlHighlight\DomainUpdater\Diff\Diff;
 use VStelmakh\UrlHighlight\DomainUpdater\DomainUpdater;
@@ -28,9 +29,10 @@ class UpdateDomainsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $filesystem = new Filesystem();
         $crawler = new Crawler();
         $parser = new Parser();
-        $generator = new Generator();
+        $generator = new Generator($filesystem);
         $domainUpdater = new DomainUpdater($crawler, $parser, $generator);
 
         $diff = $domainUpdater->update();

@@ -2,6 +2,7 @@
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Generator;
 
+use Symfony\Component\Filesystem\Filesystem;
 use VStelmakh\UrlHighlight\Domains;
 use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
 use VStelmakh\UrlHighlight\DomainUpdater\Parser\Data;
@@ -9,6 +10,14 @@ use VStelmakh\UrlHighlight\DomainUpdater\Parser\Data;
 class Generator
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s T';
+
+    /** @var Filesystem */
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
 
     /**
      * @param Data $data
@@ -29,16 +38,11 @@ class Generator
             'domains' => array_fill_keys($data->getDomains(), true),
         ]);
 
-        $isValidSyntax = $this->isValidSyntax($template);
+        $this->validateSyntax($template);
 
-        if ($isValidSyntax) {
-            // TODO: Check if writable
-            $filename = $reflection->getFileName();
-            copy($filename, $filename . '.old');
-            file_put_contents($filename, $template, LOCK_EX);
-        } else {
-            // TODO: Handle error
-        }
+        /** @var string $filename */
+        $filename = $reflection->getFileName();
+        $this->filesystem->dumpFile($filename, $template);
     }
 
     /**
@@ -51,22 +55,18 @@ class Generator
         ob_start();
         extract($parameters, EXTR_SKIP);
         include $templatePath;
-        return ob_get_clean();
+        return ob_get_clean() ?: '';
     }
 
     /**
      * @param string $string
-     * @return bool
      */
-    private function isValidSyntax(string $string): bool
+    private function validateSyntax(string $string): void
     {
         try {
-            token_get_all($string, TOKEN_PARSE);
+            $tokens = token_get_all($string, TOKEN_PARSE);
         } catch (\Throwable $e) {
-            // TODO: throw error
-            return false;
+            throw new \RuntimeException('Result file has invalid PHP syntax', 0, $e);
         }
-
-        return true;
     }
 }
