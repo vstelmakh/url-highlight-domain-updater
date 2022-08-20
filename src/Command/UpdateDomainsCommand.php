@@ -57,7 +57,7 @@ class UpdateDomainsCommand extends Command
 
     /**
      * @param OutputInterface $output
-     * @param array $domains
+     * @param string[] $domains
      * @param string $prefix
      */
     private function printDomains(OutputInterface $output, array $domains, string $prefix): void

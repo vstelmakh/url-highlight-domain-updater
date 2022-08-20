@@ -4,26 +4,20 @@ namespace VStelmakh\UrlHighlight\DomainUpdater\Parser;
 
 class Data
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     private $version;
 
-    /**
-     * @var \DateTimeImmutable
-     */
+    /** @var \DateTimeImmutable */
     private $lastUpdated;
 
-    /**
-     * @var array&string[]
-     */
+    /** @var string[] */
     private $domains;
 
     /**
      * @internal
      * @param int $version
      * @param \DateTimeImmutable $lastUpdated
-     * @param array|string[] $domains
+     * @param string[] $domains
      */
     public function __construct(int $version, \DateTimeImmutable $lastUpdated, array $domains)
     {
@@ -49,7 +43,7 @@ class Data
     }
 
     /**
-     * @return array&string[]
+     * @return string[]
      */
     public function getDomains(): array
     {

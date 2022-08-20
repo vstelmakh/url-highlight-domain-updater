@@ -7,7 +7,7 @@ class Crawler
     public const TLD_LIST_URL = 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt';
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getDataFromIANA(): array
     {

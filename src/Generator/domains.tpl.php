@@ -8,15 +8,11 @@ namespace <?php echo $namespace ?>;
  */
 interface <?php echo $className . PHP_EOL ?>
 {
-    public const DATE_FORMAT = '<?php echo $dateFormat ?>';
-    public const FILE_CREATED = '<?php echo $fileCreated ?>';
+    public const DATE_FORMAT = <?php var_export($dateFormat) ?>;
+    public const CREATED_AT = <?php var_export($createdAt) ?>;
 
-    public const VERSION = <?php echo $version ?>;
-    public const LAST_UPDATED = '<?php echo $lastUpdated ?>';
+    public const IANA_VERSION = <?php var_export($version) ?>;
+    public const IANA_UPDATED_AT = <?php var_export($lastUpdated) ?>;
 
-    public const TOP_LEVEL_DOMAINS = [
-<?php foreach ($domains as $domain) {
-    echo '        \'' . $domain . '\' => true,' . PHP_EOL;
-} ?>
-    ];
+    public const TOP_LEVEL_DOMAINS = <?php var_export($domains) ?>;
 }

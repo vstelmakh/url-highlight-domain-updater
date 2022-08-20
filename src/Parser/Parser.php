@@ -5,7 +5,7 @@ namespace VStelmakh\UrlHighlight\DomainUpdater\Parser;
 class Parser
 {
     /**
-     * @param array $data
+     * @param string[] $data
      * @return Data
      */
     public function parse(array $data): Data
@@ -41,8 +41,8 @@ class Parser
     }
 
     /**
-     * @param array&string[] $data
-     * @return array&string[]
+     * @param string[] $data
+     * @return string[]
      */
     private function parseDomains(array $data): array
     {

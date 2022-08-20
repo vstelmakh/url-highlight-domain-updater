@@ -10,19 +10,13 @@ use VStelmakh\UrlHighlight\DomainUpdater\Parser\Parser;
 
 class DomainUpdater
 {
-    /**
-     * @var Crawler
-     */
+    /** @var Crawler */
     private $crawler;
 
-    /**
-     * @var Parser
-     */
+    /** @var Parser */
     private $parser;
 
-    /**
-     * @var Generator
-     */
+    /** @var Generator */
     private $generator;
 
     /**
@@ -37,6 +31,9 @@ class DomainUpdater
         $this->generator = $generator;
     }
 
+    /**
+     * @return Diff
+     */
     public function update(): Diff
     {
         $data = $this->crawler->getDataFromIANA();

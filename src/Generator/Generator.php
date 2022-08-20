@@ -10,6 +10,10 @@ class Generator
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s T';
 
+    /**
+     * @param Data $data
+     * @return void
+     */
     public function generate(Data $data): void
     {
         $reflection = new \ReflectionClass(Domains::class);
@@ -19,10 +23,10 @@ class Generator
             'className' => $reflection->getShortName(),
             'sourceUrl' => Crawler::TLD_LIST_URL,
             'dateFormat' => self::DATE_FORMAT,
-            'fileCreated' => date(self::DATE_FORMAT),
+            'createdAt' => (new \DateTime('now', new \DateTimeZone('UTC')))->format(self::DATE_FORMAT),
             'version' => $data->getVersion(),
             'lastUpdated' => $data->getLastUpdated()->format(self::DATE_FORMAT),
-            'domains' => $data->getDomains(),
+            'domains' => array_fill_keys($data->getDomains(), true),
         ]);
 
         $isValidSyntax = $this->isValidSyntax($template);
@@ -30,13 +34,18 @@ class Generator
         if ($isValidSyntax) {
             // TODO: Check if writable
             $filename = $reflection->getFileName();
-            copy($filename, $filename . '.bak');
+            copy($filename, $filename . '.old');
             file_put_contents($filename, $template, LOCK_EX);
         } else {
             // TODO: Handle error
         }
     }
 
+    /**
+     * @param string $templatePath
+     * @param mixed[] $parameters
+     * @return string
+     */
     private function renderTemplate(string $templatePath, array $parameters): string
     {
         ob_start();
@@ -45,6 +54,10 @@ class Generator
         return ob_get_clean();
     }
 
+    /**
+     * @param string $string
+     * @return bool
+     */
     private function isValidSyntax(string $string): bool
     {
         try {

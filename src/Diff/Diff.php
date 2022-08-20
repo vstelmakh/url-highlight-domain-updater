@@ -4,19 +4,15 @@ namespace VStelmakh\UrlHighlight\DomainUpdater\Diff;
 
 class Diff
 {
-    /**
-     * @var array&string[]
-     */
+    /** @var string[] */
     private $removedDomains;
 
-    /**
-     * @var array&string[]
-     */
+    /** @var string[] */
     private $newDomains;
 
     /**
-     * @param array&string[] $currentDomains
-     * @param array&string[] $parsedDomains
+     * @param string[] $currentDomains
+     * @param string[] $parsedDomains
      */
     public function __construct(array $currentDomains, array $parsedDomains)
     {
@@ -25,7 +21,7 @@ class Diff
     }
 
     /**
-     * @return array|string[]
+     * @return string[]
      */
     public function getRemovedDomains(): array
     {
@@ -33,7 +29,7 @@ class Diff
     }
 
     /**
-     * @return array|string[]
+     * @return string[]
      */
     public function getNewDomains(): array
     {
