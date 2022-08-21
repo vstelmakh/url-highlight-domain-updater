@@ -5,17 +5,17 @@ namespace VStelmakh\UrlHighlight\DomainUpdater\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
 use VStelmakh\UrlHighlight\DomainUpdater\Diff\Diff;
 use VStelmakh\UrlHighlight\DomainUpdater\DomainUpdater;
-use VStelmakh\UrlHighlight\DomainUpdater\Generator\Generator;
-use VStelmakh\UrlHighlight\DomainUpdater\Parser\Parser;
+use VStelmakh\UrlHighlight\DomainUpdater\DomainUpdaterFactory;
 
 class UpdateDomainsCommand extends Command
 {
     public const SUCCESS = 0;
     public const FAILURE = 1;
+
+    /** @var DomainUpdater */
+    private $domainUpdater;
 
     protected function configure(): void
     {
@@ -25,20 +25,22 @@ class UpdateDomainsCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return void
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->domainUpdater = DomainUpdaterFactory::create();
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $filesystem = new Filesystem();
-        $crawler = new Crawler();
-        $parser = new Parser();
-        $generator = new Generator($filesystem);
-        $domainUpdater = new DomainUpdater($crawler, $parser, $generator);
-
-        $diff = $domainUpdater->update();
-
+        $diff = $this->domainUpdater->update();
         $this->printDomainsDiff($output, $diff);
-
         return self::SUCCESS;
     }
 
