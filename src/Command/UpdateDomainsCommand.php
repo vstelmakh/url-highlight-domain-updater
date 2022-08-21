@@ -39,7 +39,14 @@ class UpdateDomainsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $diff = $this->domainUpdater->update();
+        $output->write('Updating domains for Url highlight...');
+        try {
+            $diff = $this->domainUpdater->update();
+        } catch (\Throwable $e) {
+            $output->writeln(' <fg=red>error</>');
+            throw $e;
+        }
+        $output->writeln(' <fg=green>success</>');
         $this->printDomainsDiff($output, $diff);
         return self::SUCCESS;
     }
