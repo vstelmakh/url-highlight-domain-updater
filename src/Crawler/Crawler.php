@@ -2,7 +2,7 @@
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler;
 
-use VStelmakh\UrlHighlight\DomainUpdater\Exception\CrawlingException;
+use VStelmakh\UrlHighlight\DomainUpdater\Exception\CrawlerException;
 
 class Crawler
 {
@@ -17,7 +17,7 @@ class Crawler
 
         if ($result === false) {
             $error = error_get_last();
-            throw new CrawlingException(sprintf(
+            throw new CrawlerException(sprintf(
                 'Error "%s" on crawling from "%s".',
                 $error['message'] ?? '',
                 self::TLD_LIST_URL

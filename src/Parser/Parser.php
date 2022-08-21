@@ -2,7 +2,7 @@
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Parser;
 
-use VStelmakh\UrlHighlight\DomainUpdater\Exception\ParsingException;
+use VStelmakh\UrlHighlight\DomainUpdater\Exception\ParserException;
 
 class Parser
 {
@@ -13,7 +13,7 @@ class Parser
     public function parse(array $data): Data
     {
         if (empty($data)) {
-            throw new ParsingException('Unable to parse empty data.');
+            throw new ParserException('Unable to parse empty data.');
         }
 
         $firstRow = array_shift($data);
@@ -34,7 +34,7 @@ class Parser
         preg_match('/Version\s+(\d+),/ui', $string, $matches);
         $version = $matches[1] ?? null;
         if ($version === null) {
-            throw new ParsingException(sprintf('Unable to parse "version" value from "%s".', $string));
+            throw new ParserException(sprintf('Unable to parse "version" value from "%s".', $string));
         }
         return (int) $version;
     }
@@ -48,13 +48,13 @@ class Parser
         preg_match('/Last\sUpdated\s(.+)/ui', $string, $matches);
         $lastUpdated = $matches[1] ?? null;
         if ($lastUpdated === null) {
-            throw new ParsingException(sprintf('Unable to parse "last updated" value from "%s".', $string));
+            throw new ParserException(sprintf('Unable to parse "last updated" value from "%s".', $string));
         }
 
         $dateFormat = 'D M d H:i:s Y T';
         $datetime = \DateTimeImmutable::createFromFormat($dateFormat, $lastUpdated);
         if ($datetime === false) {
-            throw new ParsingException(sprintf(
+            throw new ParserException(sprintf(
                 'Unable to parse "last updated" date "%s" as format "%s".',
                 $lastUpdated,
                 $dateFormat
@@ -71,7 +71,7 @@ class Parser
     private function parseDomains(array $domains): array
     {
         if (empty($domains)) {
-            throw new ParsingException('Unable to parse domains.');
+            throw new ParserException('Unable to parse domains.');
         }
 
         $result = [];
@@ -85,7 +85,7 @@ class Parser
                 $domainDecoded = idn_to_utf8($domainLowercase);
 
                 if ($domainDecoded === false) {
-                    throw new ParsingException(sprintf(
+                    throw new ParserException(sprintf(
                         'Error "%s" on decoding punycode domain "%s".',
                         error_get_last()['message'] ?? '',
                         $domainLowercase
@@ -111,7 +111,7 @@ class Parser
     private function validateDomain(string $domain): void
     {
         if (empty($domain) || preg_match('/\s/u', $domain)) {
-            throw new ParsingException(sprintf(
+            throw new ParserException(sprintf(
                 'Invalid domain "%s" parsed.',
                 $domain
             ));

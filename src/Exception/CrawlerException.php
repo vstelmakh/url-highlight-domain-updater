@@ -2,6 +2,6 @@
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Exception;
 
-class CrawlingException extends \RuntimeException
+class CrawlerException extends \RuntimeException
 {
 }
