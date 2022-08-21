@@ -2,6 +2,8 @@
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Parser;
 
+use VStelmakh\UrlHighlight\DomainUpdater\Exception\ParsingException;
+
 class Parser
 {
     /**
@@ -10,7 +12,10 @@ class Parser
      */
     public function parse(array $data): Data
     {
-        // TODO: add data format validation
+        if (empty($data)) {
+            throw new ParsingException('Unable to parse empty data.');
+        }
+
         $firstRow = array_shift($data);
         $version = $this->parseVersion($firstRow);
         $lastUpdated = $this->parseLastUpdated($firstRow);
@@ -27,7 +32,11 @@ class Parser
     private function parseVersion(string $string): int
     {
         preg_match('/Version\s+(\d+),/ui', $string, $matches);
-        return (int) $matches[1];
+        $version = $matches[1] ?? null;
+        if ($version === null) {
+            throw new ParsingException(sprintf('Unable to parse "version" value from "%s".', $string));
+        }
+        return (int) $version;
     }
 
     /**
@@ -37,26 +46,76 @@ class Parser
     private function parseLastUpdated(string $string): \DateTimeImmutable
     {
         preg_match('/Last\sUpdated\s(.+)/ui', $string, $matches);
-        return \DateTimeImmutable::createFromFormat('D M d H:i:s Y T', $matches[1]);
+        $lastUpdated = $matches[1] ?? null;
+        if ($lastUpdated === null) {
+            throw new ParsingException(sprintf('Unable to parse "last updated" value from "%s".', $string));
+        }
+
+        $dateFormat = 'D M d H:i:s Y T';
+        $datetime = \DateTimeImmutable::createFromFormat($dateFormat, $lastUpdated);
+        if ($datetime === false) {
+            throw new ParsingException(sprintf(
+                'Unable to parse "last updated" date "%s" as format "%s".',
+                $lastUpdated,
+                $dateFormat
+            ));
+        }
+
+        return $datetime;
     }
 
     /**
-     * @param string[] $data
+     * @param string[] $domains
      * @return string[]
      */
-    private function parseDomains(array $data): array
+    private function parseDomains(array $domains): array
     {
+        if (empty($domains)) {
+            throw new ParsingException('Unable to parse domains.');
+        }
+
         $result = [];
-        foreach ($data as $domain) {
-            // TODO: trim, check if valid
+        foreach ($domains as $domain) {
+            $domain = trim($domain);
+            $this->validateDomain($domain);
+
             $domainLowercase = mb_strtolower($domain);
-            $result[] = $this->isPunycode($domainLowercase) ? idn_to_utf8($domainLowercase) : $domainLowercase;
+
+            if ($this->isPunycode($domainLowercase)) {
+                $domainDecoded = idn_to_utf8($domainLowercase);
+
+                if ($domainDecoded === false) {
+                    throw new ParsingException(sprintf(
+                        'Error "%s" on decoding punycode domain "%s".',
+                        error_get_last()['message'] ?? '',
+                        $domainLowercase
+                    ));
+                }
+
+                $domainLowercase = $domainDecoded;
+            }
+
+            $result[] = $domainLowercase;
         }
 
         $result = array_unique($result);
         sort($result, SORT_STRING);
 
         return $result;
+    }
+
+    /**
+     * @param string $domain
+     * @return void
+     */
+    private function validateDomain(string $domain): void
+    {
+        if (empty($domain) || preg_match('/\s/u', $domain)) {
+            throw new ParsingException(sprintf(
+                'Invalid domain "%s" parsed.',
+                $domain
+            ));
+        }
     }
 
     /**
