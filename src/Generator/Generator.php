@@ -1,10 +1,10 @@
 <?php
 
-namespace VStelmakh\UrlHighlight\DomainUpdater\ResultGenerator;
+namespace VStelmakh\UrlHighlight\DomainUpdater\Generator;
 
 use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
 
-class ResultGenerator
+class Generator
 {
     public function generate(DomainList $domainList): string
     {

@@ -1,11 +1,23 @@
 <?php
 
-namespace VStelmakh\UrlHighlight\DomainUpdater\Parser;
+namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler;
 
+use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Parser\DomainParser;
+use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Parser\LastUpdatedParser;
+use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Parser\VersionParser;
 use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
 
 class Parser
 {
+    public static function create(): self
+    {
+        return new self(
+            new VersionParser(),
+            new LastUpdatedParser(),
+            new DomainParser(),
+        );
+    }
+
     public function __construct(
         private readonly VersionParser $versionParser,
         private readonly LastUpdatedParser $lastUpdatedParser,

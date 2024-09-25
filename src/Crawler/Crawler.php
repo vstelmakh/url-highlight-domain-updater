@@ -2,29 +2,23 @@
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler;
 
+use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
+
 class Crawler
 {
-    private const string IANA_TLD_LIST_URL = 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt';
-
-    /** @return array<string> */
-    public function getTldData(): array
+    public static function create(): self
     {
-        $result = file(self::IANA_TLD_LIST_URL, FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
-
-        if ($result === false) {
-            $this->throwError();
-        }
-
-        return $result;
+        return new self(new Client(), Parser::create());
     }
 
-    private function throwError(): never
+    public function __construct(
+        private readonly Client $client,
+        private readonly Parser $parser,
+    ) {}
+
+    public function crawlDomains(): DomainList
     {
-        $error = error_get_last();
-        throw new \RuntimeException(sprintf(
-            'Error "%s" on crawling from "%s".',
-            $error['message'] ?? '',
-            self::IANA_TLD_LIST_URL
-        ));
+        $tldData = $this->client->getTldData();
+        return $this->parser->parse($tldData);
     }
 }

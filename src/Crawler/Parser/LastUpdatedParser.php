@@ -1,6 +1,6 @@
 <?php
 
-namespace VStelmakh\UrlHighlight\DomainUpdater\Parser;
+namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler\Parser;
 
 class LastUpdatedParser
 {
