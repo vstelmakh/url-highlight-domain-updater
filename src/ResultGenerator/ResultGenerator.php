@@ -31,7 +31,7 @@ class ResultGenerator
         $spacer = str_repeat(' ', 8);
         $result = '';
         foreach ($domains as $domain) {
-            $result .= sprintf("%s['%s'] => true,\n", $spacer, $domain);
+            $result .= sprintf("%s'%s' => true,\n", $spacer, $domain);
         }
         return trim($result);
     }
@@ -47,7 +47,7 @@ class ResultGenerator
              * @internal
              */
             interface Domains
-            {        
+            {
                 /**
                  * List of valid top-level domains provided by IANA (https://www.iana.org/)
                  * Source: http://data.iana.org/TLD/tlds-alpha-by-domain.txt
