@@ -1,12 +1,18 @@
 <?php
 
-namespace VStelmakh\UrlHighlight\DomainUpdater\Generator;
+namespace VStelmakh\UrlHighlight\DomainUpdater\Result;
 
 use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
+use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Client;
 
-class Generator
+class Formatter
 {
-    public function generate(DomainList $domainList): string
+    public static function create(): self
+    {
+        return new self();
+    }
+
+    public function format(DomainList $domainList): string
     {
         $domains = $this->getDomainValues($domainList);
         sort($domains, SORT_STRING);
@@ -38,6 +44,8 @@ class Generator
 
     private function getForUrlHighlight(string $domainsResult): string
     {
+        $source = Client::IANA_TLD_LIST_URL;
+
         return <<<PHP
             <?php
 
@@ -50,7 +58,7 @@ class Generator
             {
                 /**
                  * List of valid top-level domains provided by IANA (https://www.iana.org/)
-                 * Source: http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+                 * Source: {$source}
                  */
                 public const TOP_LEVEL_DOMAINS = [
                     {$domainsResult}

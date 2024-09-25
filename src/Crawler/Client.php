@@ -4,7 +4,7 @@ namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler;
 
 class Client
 {
-    private const string IANA_TLD_LIST_URL = 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt';
+    public const string IANA_TLD_LIST_URL = 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt';
 
     /** @return array<string> */
     public function getTldData(): array

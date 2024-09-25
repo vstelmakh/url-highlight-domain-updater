@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use VStelmakh\UrlHighlight\DomainUpdater\Command\Command;
+use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
+use VStelmakh\UrlHighlight\DomainUpdater\Result\Persister;
+
+$application = new Application();
+
+$command = new Command(Crawler::create(), Persister::create());
+$application->add($command);
+
+$application->setDefaultCommand($command->getName(), true);
+$application->run();
