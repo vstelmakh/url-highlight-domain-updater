@@ -21,26 +21,20 @@ class Persister
     public function save(DomainList $domainList, string $resultPath, bool $isOverwrite): string
     {
         $absolutePath = Path::makeAbsolute($resultPath, getcwd());
-        $this->validateOverwrite($absolutePath, $isOverwrite);
+        $this->validate($absolutePath, $isOverwrite);
 
         $result = $this->formatter->format($domainList);
-
-        try {
-            $this->filesystem->dumpFile($absolutePath, $result);
-        } catch (\Throwable $e) {
-            throw new \RuntimeException(sprintf('Unable to save result. %s', $e->getMessage()), $e);
-        }
+        $this->filesystem->dumpFile($absolutePath, $result);
 
         return $absolutePath;
     }
 
-    private function validateOverwrite(string $path, bool $isOverwrite): void
+    public function validate(string $path, bool $isOverwrite): void
     {
         if (!$isOverwrite && $this->filesystem->exists($path)) {
-            throw new \RuntimeException(sprintf(
-                'File "%s" already exists. Consider setting "%s" parameter to true to overwrite existing file.',
-                $path,
-                'isOverwrite',
+            throw new FileExistsException(sprintf(
+                'File "%s" already exists, with overwrite not allowed.',
+                $path
             ));
         }
     }

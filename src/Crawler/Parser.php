@@ -28,7 +28,7 @@ class Parser
     public function parse(array $data): DomainList
     {
         if (empty($data)) {
-            throw new \UnexpectedValueException('Unable to parse empty data.');
+            throw new \InvalidArgumentException('Unable to parse empty data.');
         }
 
         $firstLine = array_shift($data);

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use VStelmakh\UrlHighlight\DomainUpdater\Result\FileExistsException;
 
 class UpdaterCommand extends Command
 {
@@ -35,24 +36,23 @@ class UpdaterCommand extends Command
         $isOverwrite = (bool) $input->getOption(self::OPT_OVERWRITE);
         $resultPath = (string) $input->getArgument(self::ARG_RESULT);
 
-        $result = $this->updateDomains($output, $resultPath, $isOverwrite);
-        $this->renderResult($output, $result);
-
-        return self::SUCCESS;
-    }
-
-    private function updateDomains(OutputInterface $output, string $resultPath, bool $isOverwrite): UpdaterResult
-    {
         $output->write('Updating domains from IANA...');
 
         try {
             $result = $this->updater->update($resultPath, $isOverwrite);
             $output->writeln(' <fg=green>done</>');
-            return $result;
+        } catch (FileExistsException $e) {
+            $output->writeln(' <fg=red>error</>');
+            $output->writeln(sprintf('File already exists: <fg=yellow>%s</>. Consider using <fg=cyan>--%s</> option.', $resultPath, self::OPT_OVERWRITE));
+            return self::INVALID;
         } catch (\Throwable $e) {
             $output->writeln(' <fg=red>error</>');
             throw $e;
         }
+
+        $this->renderResult($output, $result);
+
+        return self::SUCCESS;
     }
 
     private function renderResult(OutputInterface $output, UpdaterResult $result): void

@@ -22,6 +22,7 @@ class Updater
 
     public function update(string $resultPath, bool $isOverwrite): UpdaterResult
     {
+        $this->persister->validate($resultPath, $isOverwrite);
         $domainList = $this->crawler->crawlDomains();
         $resultPath = $this->persister->save($domainList, $resultPath, $isOverwrite);
 
