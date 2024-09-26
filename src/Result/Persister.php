@@ -18,7 +18,7 @@ class Persister
         private readonly Filesystem $filesystem,
     ) {}
 
-    public function save(DomainList $domainList, string $resultPath, bool $isOverwrite): void
+    public function save(DomainList $domainList, string $resultPath, bool $isOverwrite): string
     {
         $absolutePath = Path::makeAbsolute($resultPath, getcwd());
         $this->validateOverwrite($absolutePath, $isOverwrite);
@@ -30,6 +30,8 @@ class Persister
         } catch (\Throwable $e) {
             throw new \RuntimeException(sprintf('Unable to save result. %s', $e->getMessage()), $e);
         }
+
+        return $absolutePath;
     }
 
     private function validateOverwrite(string $path, bool $isOverwrite): void

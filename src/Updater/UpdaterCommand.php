@@ -36,7 +36,7 @@ class UpdaterCommand extends Command
         $resultPath = (string) $input->getArgument(self::ARG_RESULT);
 
         $result = $this->updateDomains($output, $resultPath, $isOverwrite);
-        $this->renderReport($output, $result);
+        $this->renderResult($output, $result);
 
         return self::SUCCESS;
     }
@@ -55,7 +55,7 @@ class UpdaterCommand extends Command
         }
     }
 
-    private function renderReport(OutputInterface $output, UpdaterResult $result): void
+    private function renderResult(OutputInterface $output, UpdaterResult $result): void
     {
         $table = new Table($output);
         $table->setStyle('compact');
@@ -69,5 +69,6 @@ class UpdaterCommand extends Command
         $output->writeln('');
         $table->render();
         $output->writeln('');
+        $output->writeln(sprintf('Result saved to: <fg=yellow>%s</>', $result->resultPath));
     }
 }
