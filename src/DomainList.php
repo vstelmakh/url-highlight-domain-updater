@@ -41,6 +41,11 @@ final class DomainList
         $this->domains[$value] = $domain;
     }
 
+    public function getCount(): int
+    {
+        return count($this->domains);
+    }
+
     private function validateGreaterThanZero(int $value): void
     {
         if ($value <= 0) {

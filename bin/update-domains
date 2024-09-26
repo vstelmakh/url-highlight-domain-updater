@@ -6,13 +6,12 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use VStelmakh\UrlHighlight\DomainUpdater\Command\Command;
-use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
-use VStelmakh\UrlHighlight\DomainUpdater\Result\Persister;
+use VStelmakh\UrlHighlight\DomainUpdater\Updater\Updater;
+use VStelmakh\UrlHighlight\DomainUpdater\Updater\UpdaterCommand;
 
 $application = new Application();
 
-$command = new Command(Crawler::create(), Persister::create());
+$command = new UpdaterCommand(Updater::create());
 $application->add($command);
 
 $application->setDefaultCommand($command->getName(), true);
