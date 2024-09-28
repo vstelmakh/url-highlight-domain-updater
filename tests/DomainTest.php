@@ -18,7 +18,7 @@ class DomainTest extends TestCase
         }
 
         $domain = new Domain($input);
-        $this->assertSame($expected, $domain->getValue());
+        self::assertSame($expected, $domain->getValue());
     }
 
     /** @return array<mixed> */
