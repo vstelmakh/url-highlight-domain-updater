@@ -22,7 +22,7 @@ class Crawler
 
     public function crawlDomains(): DomainList
     {
-        $tldData = $this->client->getContentByLines(self::IANA_TLD_LIST_URL);
-        return $this->parser->parse($tldData);
+        $content = $this->client->getContentByLines(self::IANA_TLD_LIST_URL);
+        return $this->parser->parse($content);
     }
 }
