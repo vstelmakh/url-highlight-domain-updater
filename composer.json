@@ -19,7 +19,8 @@
         "symfony/filesystem": "^7.1"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.12"
+        "phpstan/phpstan": "^1.12",
+        "friendsofphp/php-cs-fixer": "^3.64"
     },
     "autoload": {
         "psr-4": {
@@ -32,8 +33,11 @@
         }
     },
     "scripts": {
+        "fix:phpcs": "vendor/bin/php-cs-fixer fix --show-progress=dots --diff --ansi",
+        "test:phpcs": "vendor/bin/php-cs-fixer check --show-progress=dots --diff --ansi",
         "test:phpstan": "vendor/bin/phpstan analyse --ansi --no-progress",
         "test:all": [
+            "@test:phpcs",
             "@test:phpstan"
         ]
     }

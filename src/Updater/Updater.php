@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater\Updater;
 
 use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;

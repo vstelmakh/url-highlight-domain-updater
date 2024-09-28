@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater;
 
 final class Domain
 {
     private readonly string $value;
 
-    public function __construct(string $value) {
+    public function __construct(string $value)
+    {
         $this->validateIsNotEmpty($value);
         $this->validateContainsValidCharacters($value);
         $this->value = $this->normalizeValue($value);

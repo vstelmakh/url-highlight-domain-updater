@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler;
 
 class Client
@@ -24,7 +26,7 @@ class Client
         throw new \RuntimeException(sprintf(
             'Error "%s" on crawling from "%s".',
             $error['message'] ?? '',
-            self::IANA_TLD_LIST_URL
+            self::IANA_TLD_LIST_URL,
         ));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler\Parser;
 
 use VStelmakh\UrlHighlight\DomainUpdater\Domain;
@@ -27,7 +29,7 @@ class DomainParser
             throw new \RuntimeException(sprintf(
                 'Error "%s" on decoding punycode domain "%s".',
                 error_get_last()['message'] ?? '',
-                $value
+                $value,
             ));
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater\Crawler\Parser;
 
 class LastUpdatedParser
@@ -30,7 +32,7 @@ class LastUpdatedParser
             throw new \RuntimeException(sprintf(
                 'Unable to parse "last updated" date "%s" as format "%s".',
                 $value,
-                self::DATE_FORMAT
+                self::DATE_FORMAT,
             ));
         }
 

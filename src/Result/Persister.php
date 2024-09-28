@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater\Result;
 
 use Symfony\Component\Filesystem\Filesystem;
@@ -35,7 +37,7 @@ class Persister
         if (!$isOverwrite && $this->filesystem->exists($path)) {
             throw new FileExistsException(sprintf(
                 'File "%s" already exists, with overwrite not allowed.',
-                $path
+                $path,
             ));
         }
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VStelmakh\UrlHighlight\DomainUpdater\Result;
 
 use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
@@ -64,6 +66,7 @@ class Formatter
                     {$domainsResult}
                 ];
             }
+
             PHP;
     }
 }

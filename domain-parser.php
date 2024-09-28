@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $domains = file('http://data.iana.org/TLD/tlds-alpha-by-domain.txt', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES);
 
 array_shift($domains); // remove first row (version info)
