@@ -20,7 +20,8 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^1.12",
-        "friendsofphp/php-cs-fixer": "^3.64"
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpunit/phpunit": "^11.3"
     },
     "autoload": {
         "psr-4": {
@@ -36,9 +37,11 @@
         "fix:phpcs": "vendor/bin/php-cs-fixer fix --show-progress=dots --diff --ansi",
         "test:phpcs": "vendor/bin/php-cs-fixer check --show-progress=dots --diff --ansi",
         "test:phpstan": "vendor/bin/phpstan analyse --ansi --no-progress",
+        "test:phpunit": "vendor/bin/phpunit",
         "test:all": [
             "@test:phpcs",
-            "@test:phpstan"
+            "@test:phpstan",
+            "@test:phpunit"
         ]
     }
 }
