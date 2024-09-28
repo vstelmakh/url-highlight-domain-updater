@@ -36,7 +36,7 @@ final class Domain
     {
         // not: whitespace, mathematical, currency, modifier symbol, control point, punctuation
         $isValid = preg_match('/^[^\p{Z}\p{Sm}\p{Sc}\p{Sk}\p{C}\p{P}]{1,63}$/u', $value);
-        if ($isValid === false) {
+        if ($isValid !== 1) {
             throw new \DomainException('Domain value contains invalid characters.');
         }
     }
