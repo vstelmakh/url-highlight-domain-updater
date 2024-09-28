@@ -1,0 +1,14 @@
+parameters:
+  level: 8
+  tmpDir: var/phpstan
+  paths:
+    - bin
+    - src
+    - tests
+
+  reportUnmatchedIgnoredErrors: true
+  ignoreErrors:
+    # Add ignore error example
+    # -
+    #   message: '#this is regex#'
+    #   path: tests/*Test.php

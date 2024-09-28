@@ -1,31 +1,40 @@
 {
-  "name": "vstelmakh/url-highlight-domain-updater",
-  "description": "Url highlight top level domain list updater",
-  "keywords": ["url", "parser", "domains", "iana"],
-  "type": "project",
-  "license": "MIT",
-  "homepage": "https://github.com/vstelmakh/url-highlight-domain-updater",
-  "authors": [
-    {
-      "name": "Volodymyr Stelmakh",
-      "homepage": "https://github.com/vstelmakh"
+    "name": "vstelmakh/url-highlight-domain-updater",
+    "description": "Url highlight top level domain list updater",
+    "keywords": ["url", "parser", "domains", "iana"],
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://github.com/vstelmakh/url-highlight-domain-updater",
+    "authors": [
+        {
+            "name": "Volodymyr Stelmakh",
+            "homepage": "https://github.com/vstelmakh"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-mbstring": "*",
+        "ext-intl": "*",
+        "symfony/console": "^7.1",
+        "symfony/filesystem": "^7.1"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "VStelmakh\\UrlHighlight\\DomainUpdater\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VStelmakh\\UrlHighlight\\DomainUpdater\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test:phpstan": "vendor/bin/phpstan analyse --ansi --no-progress",
+        "test:all": [
+            "@test:phpstan"
+        ]
     }
-  ],
-  "require": {
-    "php": "^8.3",
-    "ext-mbstring": "*",
-    "ext-intl": "*",
-    "symfony/console": "^7.1",
-    "symfony/filesystem": "^7.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "VStelmakh\\UrlHighlight\\DomainUpdater\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "VStelmakh\\UrlHighlight\\DomainUpdater\\Tests\\": "tests/"
-    }
-  }
 }

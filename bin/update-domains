@@ -14,5 +14,5 @@ $application = new Application();
 $command = new UpdaterCommand(Updater::create());
 $application->add($command);
 
-$application->setDefaultCommand($command->getName(), true);
+$application->setDefaultCommand((string) $command->getName(), true);
 $application->run();

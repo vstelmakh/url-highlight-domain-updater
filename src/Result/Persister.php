@@ -20,7 +20,8 @@ class Persister
 
     public function save(DomainList $domainList, string $resultPath, bool $isOverwrite): string
     {
-        $absolutePath = Path::makeAbsolute($resultPath, getcwd());
+        $workDir = getcwd() ?: __DIR__;
+        $absolutePath = Path::makeAbsolute($resultPath, $workDir);
         $this->validate($absolutePath, $isOverwrite);
 
         $result = $this->formatter->format($domainList);
