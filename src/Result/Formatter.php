@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace VStelmakh\UrlHighlight\DomainUpdater\Result;
 
+use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Crawler;
 use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
-use VStelmakh\UrlHighlight\DomainUpdater\Crawler\Client;
 
 class Formatter
 {
@@ -46,7 +46,7 @@ class Formatter
 
     private function getForUrlHighlight(string $domainsResult): string
     {
-        $source = Client::IANA_TLD_LIST_URL;
+        $source = Crawler::IANA_TLD_LIST_URL;
 
         return <<<PHP
             <?php

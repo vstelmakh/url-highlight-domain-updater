@@ -8,6 +8,8 @@ use VStelmakh\UrlHighlight\DomainUpdater\DomainList;
 
 class Crawler
 {
+    public const string IANA_TLD_LIST_URL = 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt';
+
     public static function create(): self
     {
         return new self(new Client(), Parser::create());
@@ -20,7 +22,7 @@ class Crawler
 
     public function crawlDomains(): DomainList
     {
-        $tldData = $this->client->getTldData();
+        $tldData = $this->client->getContentByLines(self::IANA_TLD_LIST_URL);
         return $this->parser->parse($tldData);
     }
 }
