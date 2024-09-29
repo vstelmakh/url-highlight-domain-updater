@@ -50,6 +50,8 @@ class Formatter
 
         return <<<PHP
             <?php
+            
+            declare(strict_types=1);
 
             namespace VStelmakh\UrlHighlight;
 

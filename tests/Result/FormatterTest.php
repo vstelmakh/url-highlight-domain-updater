@@ -38,6 +38,8 @@ class FormatterTest extends TestCase
     {
         return <<<PHP
             <?php
+            
+            declare(strict_types=1);
 
             namespace VStelmakh\UrlHighlight;
 
