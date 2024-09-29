@@ -1,0 +1,54 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl
+          coverage: xdebug
+
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Prepare Composer cache vars
+        id: composer
+        run: |
+          echo "cache_dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+          echo "cache_key=composer-" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer.outputs.cache_dir }}
+          key: ${{ steps.composer.outputs.cache_key }}${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ steps.composer.outputs.cache_key }}
+
+      - name: Update Composer dependencies
+        run: composer update --prefer-dist --no-progress --no-suggest --no-interaction
+
+      - name: Run PHP CS Fixer
+        run: composer test:phpcs
+        if: success()
+
+      - name: Run PHPStan
+        run: composer test:phpstan
+        if: success() || failure()
+
+      - name: Run PHPUnit
+        run: composer run-script test:phpunit
+        if: success() || failure()
