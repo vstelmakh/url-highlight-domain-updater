@@ -49,7 +49,7 @@ class FormatterTest extends TestCase
             interface Domains
             {
                 /**
-                 * List of valid top-level domains provided by IANA (https://www.iana.org/)
+                 * List of valid top-level domains provided by IANA
                  * Source: http://data.iana.org/TLD/tlds-alpha-by-domain.txt
                  */
                 public const TOP_LEVEL_DOMAINS = [
