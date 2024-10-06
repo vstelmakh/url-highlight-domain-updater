@@ -25,21 +25,15 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Prepare Composer cache vars
-        id: composer
-        run: |
-          echo "cache_dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-          echo "cache_key=composer-" >> $GITHUB_OUTPUT
-
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ steps.composer.outputs.cache_dir }}
-          key: ${{ steps.composer.outputs.cache_key }}${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ steps.composer.outputs.cache_key }}
+          path: vendor
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
-      - name: Update Composer dependencies
-        run: composer update --prefer-dist --no-progress --no-suggest --no-interaction
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
       - name: Run PHP CS Fixer
         run: composer test:phpcs
